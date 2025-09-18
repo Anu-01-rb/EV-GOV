@@ -49,15 +49,23 @@
 </head>
 <body class="antialiased">
     <div class="container mx-auto p-4 md:p-8">
-        <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">รายละเอียดโครงการเช่ารถบรรทุก EV ของ กทม.</h1>
-            <p class="text-lg text-gray-600 mt-2">ข้อมูลเชิงลึกสำหรับภารกิจของกรุงเทพมหานคร</p>
+        <header class="text-center mb-8 flex justify-between items-center flex-wrap">
+            <div class="flex-grow text-center">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800" id="main-title">รายละเอียดโครงการเช่ารถบรรทุก EV ของ กทม.</h1>
+                <p class="text-lg text-gray-600 mt-2" id="subtitle">ข้อมูลเชิงลึกสำหรับภารกิจของกรุงเทพมหานคร</p>
+            </div>
+            <div class="w-full flex justify-center mt-4 md:mt-0 md:w-auto">
+                <div class="flex space-x-2 p-1 bg-gray-200 rounded-full">
+                    <button id="lang-th" class="py-2 px-4 rounded-full transition-colors duration-300 font-semibold active-btn">TH</button>
+                    <button id="lang-en" class="py-2 px-4 rounded-full transition-colors duration-300 font-semibold inactive-btn">EN</button>
+                </div>
+            </div>
         </header>
 
         <main>
             <section id="comparison-dashboard" class="mb-8 p-6 bg-white rounded-2xl shadow-lg">
-                <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">ภาพรวมโครงการและคุณสมบัติหลัก</h2>
-                <p class="text-center text-gray-600 mb-6">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center" id="overview-title">ภาพรวมโครงการและคุณสมบัติหลัก</h2>
+                <p class="text-center text-gray-600 mb-6" id="overview-description">
                     โครงการนี้มีวัตถุประสงค์เพื่อเช่ารถยนต์ไฟฟ้าสำหรับภารกิจของ กทม. โดยเน้นรถบรรทุก 6 ล้อสำหรับงานเฉพาะทาง
                     เพื่อลดมลภาวะและเพิ่มประสิทธิภาพการทำงานในเมือง
                 </p>
@@ -65,35 +73,20 @@
                     <div class="chart-container">
                         <canvas id="vehicleCountChart"></canvas>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                         <div class="bg-gray-50 p-4 rounded-xl text-center shadow-md">
-                            <h3 class="font-semibold text-gray-500 text-sm md:text-base">กำลังมอเตอร์ (ขั้นต่ำ)</h3>
-                            <p class="font-bold text-lg md:text-xl text-gray-800 mt-1">170 KW</p>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-xl text-center shadow-md">
-                            <h3 class="font-semibold text-gray-500 text-sm md:text-base">ความจุแบตเตอรี่ (ขั้นต่ำ)</h3>
-                            <p class="font-bold text-lg md:text-xl text-gray-800 mt-1">150 kWh</p>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-xl text-center shadow-md">
-                            <h3 class="font-semibold text-gray-500 text-sm md:text-base">มาตรฐานแบตเตอรี่</h3>
-                            <p class="font-bold text-lg md:text-xl text-gray-800 mt-1">UN ECE R100</p>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-xl text-center shadow-md">
-                            <h3 class="font-semibold text-gray-500 text-sm md:text-base">มาตรฐานการชาร์จ</h3>
-                            <p class="font-bold text-lg md:text-xl text-gray-800 mt-1">CCS Type 2</p>
-                        </div>
+                    <div class="grid grid-cols-2 gap-4" id="key-features">
+                        <!-- Key features will be dynamically populated -->
                     </div>
                 </div>
             </section>
 
             <section id="details" class="bg-white p-6 rounded-2xl shadow-lg">
-                <p class="text-center text-gray-600 mb-6">
+                <p class="text-center text-gray-600 mb-6" id="details-description">
                     เลือกประเภทรถเพื่อดูรายละเอียดคุณสมบัติเชิงลึกทั้งหมด รวมถึงเงื่อนไขการเช่าและข้อกำหนดอื่น ๆ
                 </p>
                 <div class="flex justify-center mb-6">
                     <div class="flex space-x-2 p-1 bg-gray-200 rounded-full">
-                        <button id="compactorBtn" class="w-32 md:w-48 py-2 px-4 rounded-full transition-colors duration-300 text-sm md:text-base font-semibold">รถเก็บขยะ</button>
-                        <button id="waterBtn" class="w-32 md:w-48 py-2 px-4 rounded-full transition-colors duration-300 text-sm md:text-base font-semibold">รถบรรทุกน้ำ</button>
+                        <button id="compactorBtn" class="w-32 md:w-48 py-2 px-4 rounded-full transition-colors duration-300 text-sm md:text-base font-semibold" data-type="compactor"></button>
+                        <button id="waterBtn" class="w-32 md:w-48 py-2 px-4 rounded-full transition-colors duration-300 text-sm md:text-base font-semibold" data-type="water"></button>
                     </div>
                 </div>
                 <div id="spec-details">
@@ -103,151 +96,362 @@
     </div>
 
     <script>
-        const compactorData = {
-            title: 'รถเก็บขนมูลฝอยแบบอัด ขนาด 5 ตัน',
-            budget: '4,021,728,480.00 บาท',
-            specs: [
-                {
-                    category: 'คุณสมบัติทั่วไปและการเช่า',
-                    details: [
-                        'จำนวน: 874 คัน',
-                        'ระยะเวลาเช่า: 5 ปี นับจากวันที่ กทม. นำรถออกปฏิบัติงาน',
-                        'ประเภท: รถบรรทุกหน้าสั้น 2 ประตู 6 ล้อ',
-                        'สถานะ: เป็นรถใหม่ไม่เคยใช้งานมาก่อน',
-                        'มาตรฐาน: แชสซีและห้องโดยสารต้องมาจากโรงงานที่ได้รับมาตรฐาน ISO 9001 และ ISO 14001',
+        const translations = {
+            th: {
+                mainTitle: 'รายละเอียดโครงการเช่ารถบรรทุก EV ของ กทม.',
+                subtitle: 'ข้อมูลเชิงลึกสำหรับภารกิจของกรุงเทพมหานคร',
+                overviewTitle: 'ภาพรวมโครงการและคุณสมบัติหลัก',
+                overviewDescription: 'โครงการนี้มีวัตถุประสงค์เพื่อเช่ารถยนต์ไฟฟ้าสำหรับภารกิจของ กทม. โดยเน้นรถบรรทุก 6 ล้อสำหรับงานเฉพาะทาง เพื่อลดมลภาวะและเพิ่มประสิทธิภาพการทำงานในเมือง',
+                keyFeatures: [
+                    'กำลังมอเตอร์ (ขั้นต่ำ)', '170 kW',
+                    'ความจุแบตเตอรี่ (ขั้นต่ำ)', '150 kWh',
+                    'มาตรฐานแบตเตอรี่', 'UN ECE R100',
+                    'มาตรฐานการชาร์จ', 'CCS Type 2'
+                ],
+                detailsDescription: 'เลือกประเภทรถเพื่อดูรายละเอียดคุณสมบัติเชิงลึกทั้งหมด รวมถึงเงื่อนไขการเช่าและข้อกำหนดอื่น ๆ',
+                compactorBtn: 'รถเก็บขยะ',
+                waterBtn: 'รถบรรทุกน้ำ',
+                chartTitle: 'เปรียบเทียบจำนวนรถที่จัดเช่า',
+                chartYAxis: 'จำนวน (คัน)',
+                vehicleLabels: ['รถเก็บขนมูลฝอย', 'รถบรรทุกน้ำ'],
+                compactor: {
+                    title: 'รถเก็บขนมูลฝอยแบบอัด ขนาด 5 ตัน',
+                    budget: '4,021,728,480.00 บาท',
+                    specs: [
+                        {
+                            category: 'คุณสมบัติทั่วไปและการเช่า',
+                            details: [
+                                'จำนวน: 874 คัน',
+                                'ระยะเวลาเช่า: 5 ปี นับจากวันที่ กทม. นำรถออกปฏิบัติงาน',
+                                'ประเภท: รถบรรทุกหน้าสั้น 2 ประตู 6 ล้อ',
+                                'สถานะ: เป็นรถใหม่ไม่เคยใช้งานมาก่อน',
+                                'มาตรฐาน: แชสซีและห้องโดยสารต้องมาจากโรงงานที่ได้รับมาตรฐาน ISO 9001 และ ISO 14001',
+                            ]
+                        },
+                        {
+                            category: 'วงเงินงบประมาณ',
+                            details: [
+                                'วงเงิน: 4,021,728,480.00 บาท',
+                                'คำอ่าน: สี่พันยี่สิบเอ็ดล้านเจ็ดแสนสองหมื่นแปดพันสี่ร้อยแปดสิบบาทถ้วน'
+                            ]
+                        },
+                        {
+                            category: 'คุณสมบัติตัวรถและห้องโดยสาร',
+                            details: [
+                                'น้ำหนักบรรทุกรวม (G.V.W.): ไม่ต่ำกว่า 15,000 กก.',
+                                'น้ำหนักตัวรถรวมตู้: ไม่เกิน 10,000 กก.',
+                                'บันไดขึ้น-ลง: ด้านซ้าย-ขวา ด้านละไม่น้อยกว่า 2 ขั้น',
+                                'พวงมาลัย: ขวา มีระบบช่วยผ่อนแรง (Power Steering)',
+                                'ห้องโดยสาร: 3 ที่นั่ง, มีเครื่องปรับอากาศ, วิทยุ, กระจกไฟฟ้า',
+                                'ยาง: ขนาด 245/70R19.5 พร้อมยางอะไหล่',
+                            ]
+                        },
+                        {
+                            category: 'ระบบขับเคลื่อนไฟฟ้า (EV)',
+                            details: [
+                                'กำลังมอเตอร์สูงสุด: ไม่น้อยกว่า 170 kW',
+                                'ความจุแบตเตอรี่: 150 kWh ขึ้นไป (ชนิด LFP หรือ NMC)',
+                                'มาตรฐานแบตเตอรี่: UN ECE R100',
+                                'ระยะทางวิ่ง (เฉพาะหัวรถ): ไม่น้อยกว่า 200 กม. (ตามมาตรฐาน WLTP/CLTC/EPA/NEDC)',
+                                'ระบบป้องกัน: มาตรฐาน IP67 สำหรับมอเตอร์และแบตเตอรี่',
+                                'หัวชาร์จ: CCS Type 2',
+                                'รองรับกำลังชาร์จ: ไม่น้อยกว่า 120 kW (DC)',
+                            ]
+                        },
+                        {
+                            category: 'อุปกรณ์เฉพาะทาง (ระบบอัดขยะ)',
+                            details: [
+                                'ความจุตู้บรรทุก: ไม่น้อยกว่า 10 ลูกบาศก์เมตร',
+                                'รับน้ำหนักมูลฝอยได้: ไม่น้อยกว่า 5,000 กก.',
+                                'ระบบการทำงาน: ระบบไฮดรอลิค, ควบคุมด้วยไฟฟ้า',
+                                'อ่างรองรับมูลฝอย: ไม่น้อยกว่า 1 ลูกบาศก์เมตร',
+                                'เวลาอัด (Cycle Time): ไม่เกิน 35 วินาที',
+                                'วัสดุ: เหล็ก SS 490 / เหล็กทนการสึกกร่อนสูง',
+                                'ถังเก็บน้ำเสีย: 2 ถังรวมกันไม่น้อยกว่า 300 ลิตร, ทำจากสแตนเลสเกรด 304',
+                            ]
+                        },
+                        {
+                            category: 'เงื่อนไขสัญญาเช่าและข้อกำหนดอื่นๆ',
+                            details: [
+                                'การตรวจรับรถ: ผู้เช่าสามารถตรวจรับรถและส่วนควบก่อนการผลิตและประกอบติดตั้ง',
+                                'การปรับเปลี่ยนคุณสมบัติ: กทม. สงวนสิทธิ์ในการปรับเปลี่ยนคุณสมบัติเพื่อประโยชน์ในการใช้งานเป็นสำคัญ โดยผู้ให้เช่าไม่มีสิทธิเรียกร้องค่าใช้จ่ายเพิ่ม',
+                                'การส่งมอบเอกสาร: ผู้ยื่นข้อเสนอต้องแนบรายละเอียดและเอกสารแสดงคุณสมบัติเหล็กที่ใช้ จากบริษัทผู้ผลิตและผลการทดสอบจากสถาบันที่เชื่อถือได้',
+                                'คุณสมบัติผู้เสนอ: ต้องเป็นนิติบุคคลผู้มีอาชีพให้เช่า และไม่มีผลประโยชน์ร่วมกับผู้เสนอรายอื่น',
+                                'หลักประกันการทำสัญญา: ผู้ชนะต้องวางหลักประกันเป็นจำนวนเงิน 5% ของค่าเช่าต่อปี เป็นระยะเวลา 2 ปี',
+                            ]
+                        }
                     ]
                 },
-                {
-                    category: 'วงเงินงบประมาณ',
-                    details: [
-                        'วงเงิน: 4,021,728,480.00 บาท',
-                        'คำอ่าน: สี่พันยี่สิบเอ็ดล้านเจ็ดแสนสองหมื่นแปดพันสี่ร้อยแปดสิบบาทถ้วน'
-                    ]
-                },
-                {
-                    category: 'คุณสมบัติตัวรถและห้องโดยสาร',
-                    details: [
-                        'น้ำหนักบรรทุกรวม (G.V.W.): ไม่ต่ำกว่า 15,000 กก.',
-                        'น้ำหนักตัวรถรวมตู้: ไม่เกิน 10,000 กก.',
-                        'บันไดขึ้น-ลง: ด้านซ้าย-ขวา ด้านละไม่น้อยกว่า 2 ขั้น',
-                        'พวงมาลัย: ขวา มีระบบช่วยผ่อนแรง (Power Steering)',
-                        'ห้องโดยสาร: 3 ที่นั่ง, มีเครื่องปรับอากาศ, วิทยุ, กระจกไฟฟ้า',
-                        'ยาง: ขนาด 245/70R19.5 พร้อมยางอะไหล่',
-                    ]
-                },
-                {
-                    category: 'ระบบขับเคลื่อนไฟฟ้า (EV)',
-                    details: [
-                        'กำลังมอเตอร์สูงสุด: ไม่น้อยกว่า 170 kW',
-                        'ความจุแบตเตอรี่: 150 kWh ขึ้นไป (ชนิด LFP หรือ NMC)',
-                        'มาตรฐานแบตเตอรี่: UN ECE R100',
-                        'ระยะทางวิ่ง (เฉพาะหัวรถ): ไม่น้อยกว่า 200 กม. (ตามมาตรฐาน WLTP/CLTC/EPA/NEDC)',
-                        'ระบบป้องกัน: มาตรฐาน IP67 สำหรับมอเตอร์และแบตเตอรี่',
-                        'หัวชาร์จ: CCS Type 2',
-                        'รองรับกำลังชาร์จ: ไม่น้อยกว่า 120 kW (DC)',
-                    ]
-                },
-                {
-                    category: 'อุปกรณ์เฉพาะทาง (ระบบอัดขยะ)',
-                    details: [
-                        'ความจุตู้บรรทุก: ไม่น้อยกว่า 10 ลูกบาศก์เมตร',
-                        'รับน้ำหนักมูลฝอยได้: ไม่น้อยกว่า 5,000 กก.',
-                        'ระบบการทำงาน: ระบบไฮดรอลิค, ควบคุมด้วยไฟฟ้า',
-                        'อ่างรองรับมูลฝอย: ไม่น้อยกว่า 1 ลูกบาศก์เมตร',
-                        'เวลาอัด (Cycle Time): ไม่เกิน 35 วินาที',
-                        'วัสดุ: เหล็ก SS 490 / เหล็กทนการสึกกร่อนสูง',
-                        'ถังเก็บน้ำเสีย: 2 ถังรวมกันไม่น้อยกว่า 300 ลิตร, ทำจากสแตนเลสเกรด 304',
-                    ]
-                },
-                {
-                    category: 'เงื่อนไขสัญญาเช่าและข้อกำหนดอื่นๆ',
-                    details: [
-                        'การตรวจรับรถ: ผู้เช่าสามารถตรวจรับรถและส่วนควบก่อนการผลิตและประกอบติดตั้ง',
-                        'การปรับเปลี่ยนคุณสมบัติ: กทม. สงวนสิทธิ์ในการปรับเปลี่ยนคุณสมบัติเพื่อประโยชน์ในการใช้งานเป็นสำคัญ โดยผู้ให้เช่าไม่มีสิทธิเรียกร้องค่าใช้จ่ายเพิ่ม',
-                        'การส่งมอบเอกสาร: ผู้ยื่นข้อเสนอต้องแนบรายละเอียดและเอกสารแสดงคุณสมบัติเหล็กที่ใช้ จากบริษัทผู้ผลิตและผลการทดสอบจากสถาบันที่เชื่อถือได้',
-                        'คุณสมบัติผู้เสนอ: ต้องเป็นนิติบุคคลผู้มีอาชีพให้เช่า และไม่มีผลประโยชน์ร่วมกับผู้เสนอรายอื่น',
-                        'หลักประกันการทำสัญญา: ผู้ชนะต้องวางหลักประกันเป็นจำนวนเงิน 5% ของค่าเช่าต่อปี เป็นระยะเวลา 2 ปี',
+                water: {
+                    title: 'รถบรรทุกน้ำอเนกประสงค์ ขนาด 6 ล้อ',
+                    budget: '850,572,900.00 บาท',
+                    specs: [
+                        {
+                            category: 'คุณสมบัติทั่วไปและการเช่า',
+                            details: [
+                                'จำนวน: 145 คัน',
+                                'ระยะเวลาเช่า: 7 ปี',
+                                'ประเภท: รถบรรทุก 2 ประตู 6 ล้อ',
+                                'สถานะ: เป็นรถใหม่ไม่เคยใช้งานมาก่อน',
+                                'สามารถจดทะเบียนประเภทรถบรรทุกได้',
+                            ]
+                        },
+                        {
+                            category: 'วงเงินงบประมาณ',
+                            details: [
+                                'วงเงิน: 850,572,900.00 บาท',
+                                'คำอ่าน: แปดร้อยห้าสิบล้านห้าแสนเจ็ดหมื่นสองพันเก้าร้อยบาทถ้วน'
+                            ]
+                        },
+                        {
+                            category: 'คุณสมบัติตัวรถและห้องโดยสาร',
+                            details: [
+                                'น้ำหนักบรรทุกรวม (G.V.W.): ไม่ต่ำกว่า 15,000 กก.',
+                                'น้ำหนักตัวรถรวมน้ำหนักบรรทุก: ไม่เกิน 10,000 กก.',
+                                'พวงมาลัย: ขวา มีระบบช่วยผ่อนแรง (Power Steering)',
+                                'ห้องโดยสาร: 3 ที่นั่ง, มีเครื่องปรับอากาศ, วิทยุ, กระจกไฟฟ้า',
+                            ]
+                        },
+                        {
+                            category: 'ระบบขับเคลื่อนไฟฟ้า (EV)',
+                            details: [
+                                'กำลังมอเตอร์สูงสุด: ไม่น้อยกว่า 170 kW',
+                                'ความจุแบตเตอรี่: 150 kWh ขึ้นไป (ชนิด LFP หรือ NMC)',
+                                'มาตรฐานแบตเตอรี่: UN ECE R100',
+                                'ระบบป้องกัน: มาตรฐาน IP67 สำหรับมอเตอร์และแบตเตอรี่',
+                                'หัวชาร์จ: CCS Type 2',
+                                'รองรับกำลังชาร์จ: ไม่น้อยกว่า 120 kW (DC)',
+                            ]
+                        },
+                        {
+                            category: 'อุปกรณ์เฉพาะทาง (ระบบถังน้ำและปั๊ม)',
+                            details: [
+                                'ความจุถังน้ำ: ไม่น้อยกว่า 6,000 ลิตร',
+                                'วัสดุถังน้ำ: สแตนเลสเกรด 304 ทรงวงรี',
+                                'ระบบปั๊มน้ำ: แรงดันสูงและแรงดันปานกลาง',
+                                'กำลังส่งน้ำ: ไม่น้อยกว่า 10,000 ลิตร/ชม.',
+                                'หัวฉีดน้ำ: ท้ายรถ 2 หัว, ข้างรถ 2 หัว',
+                                'การควบคุม: จากห้องโดยสารและภายนอกรถ',
+                                'ท่อดูด: ท่อตัวหนอนขนาด 3 นิ้ว ยาว 5 เมตร พร้อมหัวกะโหลกกรองน้ำ',
+                                'ท่อส่ง: ท่อผ้าใบขนาด 2 นิ้ว ยาว 20 เมตร จำนวน 2 เส้น',
+                                'หัวฉีด: หัวฉีดน้ำด้ามยาวแบบสวมเร็ว ขนาด 2 นิ้ว',
+                                'การส่งมอบอุปกรณ์: ต้องส่งมอบพร้อมรถ และผู้ให้เช่าต้องจัดหาทดแทนหากชำรุดตลอดสัญญาเช่า',
+                            ]
+                        },
+                        {
+                            category: 'เงื่อนไขสัญญาเช่าและข้อกำหนดอื่นๆ',
+                            details: [
+                                'การตรวจรับรถ: ผู้เช่าสามารถตรวจรับรถและส่วนควบก่อนการผลิตและประกอบติดตั้ง',
+                                'การปรับเปลี่ยนคุณสมบัติ: กทม. สงวนสิทธิ์ในการปรับเปลี่ยนคุณสมบัติเพื่อประโยชน์ในการใช้งานเป็นสำคัญ โดยผู้ให้เช่าไม่มีสิทธิเรียกร้องค่าใช้จ่ายเพิ่ม',
+                                'การส่งมอบเอกสาร: ผู้ยื่นข้อเสนอต้องแนบรายละเอียดและเอกสารแสดงคุณสมบัติเหล็กที่ใช้ จากบริษัทผู้ผลิตและผลการทดสอบจากสถาบันที่เชื่อถือได้',
+                                'คุณสมบัติผู้เสนอ: ต้องเป็นนิติบุคคลผู้มีอาชีพให้เช่า และไม่มีผลประโยชน์ร่วมกับผู้เสนอรายอื่น',
+                                'วงเงินสินเชื่อ: กรณีผู้ยื่นข้อเสนอไม่มีมูลค่าสุทธิของกิจการเพียงพอ สามารถขอวงเงินสินเชื่อ 1 ใน 4 ของมูลค่างบประมาณของโครงการจากธนาคารในประเทศได้',
+                                'การชำระเงิน: จ่ายเป็นรายเดือนหลังจากส่งมอบรถและตรวจรับเรียบร้อย',
+                                'การรับประกัน: ผู้เช่ามีหน้าที่รับประกันคุณภาพตัวรถและอุปกรณ์ต่างๆ เป็นระยะเวลา 7 ปี และต้องจัดซ่อมให้เสร็จภายใน 7 วันทำการ'
+                            ]
+                        }
                     ]
                 }
-            ]
-        };
-
-        const waterData = {
-            title: 'รถบรรทุกน้ำอเนกประสงค์ ขนาด 6 ล้อ',
-            budget: '850,572,900.00 บาท',
-            specs: [
-                {
-                    category: 'คุณสมบัติทั่วไปและการเช่า',
-                    details: [
-                        'จำนวน: 145 คัน',
-                        'ระยะเวลาเช่า: 7 ปี',
-                        'ประเภท: รถบรรทุก 2 ประตู 6 ล้อ',
-                        'สถานะ: เป็นรถใหม่ไม่เคยใช้งานมาก่อน',
-                        'สามารถจดทะเบียนประเภทรถบรรทุกได้',
+            },
+            en: {
+                mainTitle: 'BMA EV Truck Rental Project Details',
+                subtitle: 'In-depth information for Bangkok Metropolitan Administration missions',
+                overviewTitle: 'Project Overview and Key Features',
+                overviewDescription: 'This project aims to rent electric vehicles for the BMA\'s missions, focusing on 6-wheel trucks for specialized tasks to reduce pollution and increase operational efficiency in the city.',
+                keyFeatures: [
+                    'Motor Power (min.)', '170 kW',
+                    'Battery Capacity (min.)', '150 kWh',
+                    'Battery Standard', 'UN ECE R100',
+                    'Charging Standard', 'CCS Type 2'
+                ],
+                detailsDescription: 'Select a vehicle type to view all in-depth specifications, including rental conditions and other requirements.',
+                compactorBtn: 'Compactor Truck',
+                waterBtn: 'Water Truck',
+                chartTitle: 'Comparison of Rented Vehicle Count',
+                chartYAxis: 'Count (units)',
+                vehicleLabels: ['Compactor Truck', 'Water Truck'],
+                compactor: {
+                    title: '5-ton Compactor Truck',
+                    budget: '4,021,728,480.00 THB',
+                    specs: [
+                        {
+                            category: 'General and Rental Conditions',
+                            details: [
+                                'Quantity: 874 vehicles',
+                                'Rental Period: 5 years from the date the BMA begins using the vehicle',
+                                'Type: Short-cab 2-door 6-wheel truck',
+                                'Status: New, never used vehicles',
+                                'Standards: Chassis and cabin must be from a factory certified with ISO 9001 and ISO 14001',
+                            ]
+                        },
+                        {
+                            category: 'Budget Allocation',
+                            details: [
+                                'Budget: 4,021,728,480.00 THB',
+                                'In words: Four billion, twenty-one million, seven hundred twenty-eight thousand, four hundred eighty Baht only'
+                            ]
+                        },
+                        {
+                            category: 'Vehicle and Cabin Specifications',
+                            details: [
+                                'Gross Vehicle Weight (G.V.W.): Not less than 15,000 kg',
+                                'Curb Weight (with container): Not exceeding 10,000 kg',
+                                'Entry Steps: At least 2 steps on both left and right sides',
+                                'Steering: Right-hand drive with Power Steering',
+                                'Cabin: 3 seats, with air conditioning, radio, and power windows',
+                                'Tires: Size 245/70R19.5 with a spare tire',
+                            ]
+                        },
+                        {
+                            category: 'Electric Drive System (EV)',
+                            details: [
+                                'Max Motor Power: Not less than 170 kW',
+                                'Battery Capacity: 150 kWh or more (LFP or NMC type)',
+                                'Battery Standard: UN ECE R100',
+                                'Driving Range (chassis only): Not less than 200 km (according to WLTP/CLTC/EPA/NEDC standards)',
+                                'Protection: IP67 standard for motor and battery',
+                                'Charging Port: CCS Type 2',
+                                'Charging Power: Not less than 120 kW (DC)',
+                            ]
+                        },
+                        {
+                            category: 'Specialized Equipment (Compactor System)',
+                            details: [
+                                'Container Capacity: Not less than 10 cubic meters',
+                                'Waste Load Capacity: Not less than 5,000 kg',
+                                'Operation: Hydraulic system, electrically controlled',
+                                'Hopper Capacity: Not less than 1 cubic meter',
+                                'Cycle Time: Not exceeding 35 seconds',
+                                'Material: SS 490 steel / high-wear resistance steel',
+                                'Wastewater Tank: 2 tanks with a total capacity of not less than 300 liters, made of grade 304 stainless steel',
+                            ]
+                        },
+                        {
+                            category: 'Rental Agreement and Other Conditions',
+                            details: [
+                                'Vehicle Inspection: The lessee can inspect the vehicle and components before production and assembly',
+                                'Specification Changes: The BMA reserves the right to modify some vehicle specifications for operational benefits, and the lessor has no right to claim additional costs',
+                                'Document Submission: The bidder must attach detailed documents and material test results from reliable institutions',
+                                'Bidder Qualifications: Must be a juristic person whose profession is renting, and must not have a common interest with other bidders',
+                                'Contract Guarantee: The winner must provide a guarantee of 5% of the annual rental fee for 2 years',
+                            ]
+                        }
                     ]
                 },
-                {
-                    category: 'วงเงินงบประมาณ',
-                    details: [
-                        'วงเงิน: 850,572,900.00 บาท',
-                        'คำอ่าน: แปดร้อยห้าสิบล้านห้าแสนเจ็ดหมื่นสองพันเก้าร้อยบาทถ้วน'
-                    ]
-                },
-                {
-                    category: 'คุณสมบัติตัวรถและห้องโดยสาร',
-                    details: [
-                        'น้ำหนักบรรทุกรวม (G.V.W.): ไม่ต่ำกว่า 15,000 กก.',
-                        'น้ำหนักตัวรถรวมน้ำหนักบรรทุก: ไม่เกิน 10,000 กก.',
-                        'พวงมาลัย: ขวา มีระบบช่วยผ่อนแรง (Power Steering)',
-                        'ห้องโดยสาร: 3 ที่นั่ง, มีเครื่องปรับอากาศ, วิทยุ, กระจกไฟฟ้า',
-                    ]
-                },
-                {
-                    category: 'ระบบขับเคลื่อนไฟฟ้า (EV)',
-                    details: [
-                        'กำลังมอเตอร์สูงสุด: ไม่น้อยกว่า 170 kW',
-                        'ความจุแบตเตอรี่: 150 kWh ขึ้นไป (ชนิด LFP หรือ NMC)',
-                        'มาตรฐานแบตเตอรี่: UN ECE R100',
-                        'ระบบป้องกัน: มาตรฐาน IP67 สำหรับมอเตอร์และแบตเตอรี่',
-                        'หัวชาร์จ: CCS Type 2',
-                        'รองรับกำลังชาร์จ: ไม่น้อยกว่า 120 kW (DC)',
-                    ]
-                },
-                {
-                    category: 'อุปกรณ์เฉพาะทาง (ระบบถังน้ำและปั๊ม)',
-                    details: [
-                        'ความจุถังน้ำ: ไม่น้อยกว่า 6,000 ลิตร',
-                        'วัสดุถังน้ำ: สแตนเลสเกรด 304 ทรงวงรี',
-                        'ระบบปั๊มน้ำ: แรงดันสูงและแรงดันปานกลาง',
-                        'กำลังส่งน้ำ: ไม่น้อยกว่า 10,000 ลิตร/ชม.',
-                        'หัวฉีดน้ำ: ท้ายรถ 2 หัว, ข้างรถ 2 หัว',
-                        'การควบคุม: จากห้องโดยสารและภายนอกรถ',
-                        'ท่อดูด: ท่อตัวหนอนขนาด 3 นิ้ว ยาว 5 เมตร พร้อมหัวกะโหลกกรองน้ำ',
-                        'ท่อส่ง: ท่อผ้าใบขนาด 2 นิ้ว ยาว 20 เมตร จำนวน 2 เส้น',
-                        'หัวฉีด: หัวฉีดน้ำด้ามยาวแบบสวมเร็ว ขนาด 2 นิ้ว',
-                        'การส่งมอบอุปกรณ์: ต้องส่งมอบพร้อมรถ และผู้ให้เช่าต้องจัดหาทดแทนหากชำรุดตลอดสัญญาเช่า',
-                    ]
-                },
-                {
-                    category: 'เงื่อนไขสัญญาเช่าและข้อกำหนดอื่นๆ',
-                    details: [
-                        'การตรวจรับรถ: ผู้เช่าสามารถตรวจรับรถและส่วนควบก่อนการผลิตและประกอบติดตั้ง',
-                        'การปรับเปลี่ยนคุณสมบัติ: กทม. สงวนสิทธิ์ในการปรับเปลี่ยนคุณสมบัติเพื่อประโยชน์ในการใช้งานเป็นสำคัญ โดยผู้ให้เช่าไม่มีสิทธิเรียกร้องค่าใช้จ่ายเพิ่ม',
-                        'การส่งมอบเอกสาร: ผู้ยื่นข้อเสนอต้องแนบรายละเอียดและเอกสารแสดงคุณสมบัติเหล็กที่ใช้ จากบริษัทผู้ผลิตและผลการทดสอบจากสถาบันที่เชื่อถือได้',
-                        'คุณสมบัติผู้เสนอ: ต้องเป็นนิติบุคคลผู้มีอาชีพให้เช่า และไม่มีผลประโยชน์ร่วมกับผู้เสนอรายอื่น',
-                        'วงเงินสินเชื่อ: กรณีผู้ยื่นข้อเสนอไม่มีมูลค่าสุทธิของกิจการเพียงพอ สามารถขอวงเงินสินเชื่อ 1 ใน 4 ของมูลค่างบประมาณของโครงการจากธนาคารในประเทศได้',
-                        'การชำระเงิน: จ่ายเป็นรายเดือนหลังจากส่งมอบรถและตรวจรับเรียบร้อย',
-                        'การรับประกัน: ผู้เช่ามีหน้าที่รับประกันคุณภาพตัวรถและอุปกรณ์ต่างๆ เป็นระยะเวลา 7 ปี และต้องจัดซ่อมให้เสร็จภายใน 7 วันทำการ'
+                water: {
+                    title: '6-wheel Multi-purpose Water Truck',
+                    budget: '850,572,900.00 THB',
+                    specs: [
+                        {
+                            category: 'General and Rental Conditions',
+                            details: [
+                                'Quantity: 145 vehicles',
+                                'Rental Period: 7 years',
+                                'Type: 2-door 6-wheel truck',
+                                'Status: New, never used vehicles',
+                                'Can be registered as a truck type',
+                            ]
+                        },
+                        {
+                            category: 'Budget Allocation',
+                            details: [
+                                'Budget: 850,572,900.00 THB',
+                                'In words: Eight hundred fifty million, five hundred seventy-two thousand, nine hundred Baht only'
+                            ]
+                        },
+                        {
+                            category: 'Vehicle and Cabin Specifications',
+                            details: [
+                                'Gross Vehicle Weight (G.V.W.): Not less than 15,000 kg',
+                                'Curb Weight (with load): Not exceeding 10,000 kg',
+                                'Steering: Right-hand drive with Power Steering',
+                                'Cabin: 3 seats, with air conditioning, radio, and power windows',
+                            ]
+                        },
+                        {
+                            category: 'Electric Drive System (EV)',
+                            details: [
+                                'Max Motor Power: Not less than 170 kW',
+                                'Battery Capacity: 150 kWh or more (LFP or NMC type)',
+                                'Battery Standard: UN ECE R100',
+                                'Protection: IP67 standard for motor and battery',
+                                'Charging Port: CCS Type 2',
+                                'Charging Power: Not less than 120 kW (DC)',
+                            ]
+                        },
+                        {
+                            category: 'Specialized Equipment (Water Tank and Pump System)',
+                            details: [
+                                'Tank Capacity: Not less than 6,000 liters',
+                                'Tank Material: Grade 304 stainless steel, oval shape',
+                                'Pump System: High-pressure and medium-pressure pump',
+                                'Water Delivery: Not less than 10,000 liters/hour',
+                                'Water Nozzles: 2 nozzles at the rear, 2 at the side',
+                                'Controls: From the cabin and external of the truck',
+                                'Suction Hose: 3-inch corrugated hose, 5 meters long with a filter head',
+                                'Delivery Hose: 2-inch canvas hose, 20 meters long (2 hoses)',
+                                'Nozzle: Long-handle quick-connect nozzle, 2-inch diameter',
+                                'Equipment Delivery: Must be delivered with the vehicle, and the lessor must replace damaged items throughout the contract',
+                            ]
+                        },
+                        {
+                            category: 'Rental Agreement and Other Conditions',
+                            details: [
+                                'Vehicle Inspection: The lessee can inspect the vehicle and components before production and assembly',
+                                'Specification Changes: The BMA reserves the right to modify some vehicle specifications for operational benefits, and the lessor has no right to claim additional costs',
+                                'Document Submission: The bidder must attach detailed documents and material test results from reliable institutions',
+                                'Bidder Qualifications: Must be a juristic person whose profession is renting, and must not have a common interest with other bidders',
+                                'Credit Line: If the bidder does not have sufficient net worth, they can obtain a credit line of 1/4 of the project\'s budget from a domestic bank',
+                                'Payment: Paid monthly after vehicle delivery and inspection',
+                                'Warranty: The lessee is responsible for guaranteeing the quality of the vehicle and equipment for 7 years and must complete repairs within 7 business days'
+                            ]
+                        }
                     ]
                 }
-            ]
+            }
         };
 
+        let currentLang = 'th';
+        let myChart;
+
+        const langThBtn = document.getElementById('lang-th');
+        const langEnBtn = document.getElementById('lang-en');
         const compactorBtn = document.getElementById('compactorBtn');
         const waterBtn = document.getElementById('waterBtn');
         const specDetailsContainer = document.getElementById('spec-details');
+        const keyFeaturesContainer = document.getElementById('key-features');
 
-        function renderSpecs(data) {
+        function updateUI() {
+            const data = translations[currentLang];
+            document.getElementById('main-title').textContent = data.mainTitle;
+            document.getElementById('subtitle').textContent = data.subtitle;
+            document.getElementById('overview-title').textContent = data.overviewTitle;
+            document.getElementById('overview-description').textContent = data.overviewDescription;
+            document.getElementById('details-description').textContent = data.detailsDescription;
+            compactorBtn.textContent = data.compactorBtn;
+            waterBtn.textContent = data.waterBtn;
+
+            keyFeaturesContainer.innerHTML = '';
+            for (let i = 0; i < data.keyFeatures.length; i += 2) {
+                keyFeaturesContainer.innerHTML += `
+                    <div class="bg-gray-50 p-4 rounded-xl text-center shadow-md">
+                        <h3 class="font-semibold text-gray-500 text-sm md:text-base">${data.keyFeatures[i]}</h3>
+                        <p class="font-bold text-lg md:text-xl text-gray-800 mt-1">${data.keyFeatures[i+1]}</p>
+                    </div>
+                `;
+            }
+
+            if (myChart) {
+                myChart.data.labels = data.vehicleLabels;
+                myChart.options.plugins.title.text = data.chartTitle;
+                myChart.options.scales.y.title.text = data.chartYAxis;
+                myChart.update();
+            }
+        }
+
+        function renderSpecs(dataType) {
+            const langData = translations[currentLang];
+            const data = langData[dataType];
             specDetailsContainer.innerHTML = `
                 <h3 class="text-xl font-bold text-center text-gray-800 mb-6">${data.title}</h3>
                 <div class="space-y-3" id="accordion-container">
@@ -268,7 +472,7 @@
             `;
             setupAccordions();
         }
-        
+
         function setupAccordions() {
              const accordionContainer = document.getElementById('accordion-container');
              if (accordionContainer) {
@@ -298,12 +502,36 @@
             }
         }
 
+        langThBtn.addEventListener('click', () => {
+            if (currentLang !== 'th') {
+                currentLang = 'th';
+                langThBtn.classList.add('active-btn');
+                langThBtn.classList.remove('inactive-btn');
+                langEnBtn.classList.remove('active-btn');
+                langEnBtn.classList.add('inactive-btn');
+                updateUI();
+                renderSpecs(compactorBtn.classList.contains('active-btn') ? 'compactor' : 'water');
+            }
+        });
+
+        langEnBtn.addEventListener('click', () => {
+            if (currentLang !== 'en') {
+                currentLang = 'en';
+                langEnBtn.classList.add('active-btn');
+                langEnBtn.classList.remove('inactive-btn');
+                langThBtn.classList.remove('active-btn');
+                langThBtn.classList.add('inactive-btn');
+                updateUI();
+                renderSpecs(compactorBtn.classList.contains('active-btn') ? 'compactor' : 'water');
+            }
+        });
+
         compactorBtn.addEventListener('click', () => {
             compactorBtn.classList.add('active-btn');
             compactorBtn.classList.remove('inactive-btn');
             waterBtn.classList.add('inactive-btn');
             waterBtn.classList.remove('active-btn');
-            renderSpecs(compactorData);
+            renderSpecs('compactor');
         });
 
         waterBtn.addEventListener('click', () => {
@@ -311,19 +539,20 @@
             waterBtn.classList.remove('inactive-btn');
             compactorBtn.classList.add('inactive-btn');
             compactorBtn.classList.remove('active-btn');
-            renderSpecs(waterData);
+            renderSpecs('water');
         });
 
         document.addEventListener('DOMContentLoaded', () => {
+            updateUI();
             compactorBtn.click();
 
             const ctx = document.getElementById('vehicleCountChart').getContext('2d');
-            new Chart(ctx, {
+            myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['รถเก็บขนมูลฝอย', 'รถบรรทุกน้ำ'],
+                    labels: translations[currentLang].vehicleLabels,
                     datasets: [{
-                        label: 'จำนวนรถ (คัน)',
+                        label: translations[currentLang].chartYAxis,
                         data: [874, 145],
                         backgroundColor: [
                             'rgba(75, 192, 192, 0.6)',
@@ -344,7 +573,7 @@
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'จำนวน (คัน)'
+                                text: translations[currentLang].chartYAxis
                             }
                         }
                     },
@@ -354,7 +583,7 @@
                         },
                         title: {
                             display: true,
-                            text: 'เปรียบเทียบจำนวนรถที่จัดเช่า',
+                            text: translations[currentLang].chartTitle,
                             font: {
                                 size: 16
                             }
